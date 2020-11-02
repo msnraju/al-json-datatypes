@@ -36,7 +36,7 @@ codeunit 50100 "JSON DataTypes"
     begin
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
-        if SalesLine.FindSet then
+        if SalesLine.FindSet() then
             repeat
                 AddSalesLineToJson(SalesLine, JSalesLines);
             until SalesLine.Next() = 0;
@@ -67,13 +67,13 @@ codeunit 50100 "JSON DataTypes"
         JLinesArray: JsonArray;
     begin
         if JSalesOrder.Get('orderNo', JOrderNoToken) then
-            SalesHeader."No." := JOrderNoToken.AsValue().AsCode();
+            SalesHeader."No." := CopyStr(JOrderNoToken.AsValue().AsCode(), 1, 20);
 
         if JSalesOrder.Get('orderDate', JOrderDateToken) then
             SalesHeader."Order Date" := JOrderDateToken.AsValue().AsDate();
 
         if JSalesOrder.Get('sellToCustomerNo', JSellToCustomerNoToken) then
-            SalesHeader."Sell-to Customer No." := JSellToCustomerNoToken.AsValue().AsCode();
+            SalesHeader."Sell-to Customer No." := CopyStr(JSellToCustomerNoToken.AsValue().AsCode(), 1, 20);
 
         if JSalesOrder.Get('lines', JLinesToken) then begin
             JLinesArray := JLinesToken.AsArray(); // Array of Objects
@@ -100,7 +100,7 @@ codeunit 50100 "JSON DataTypes"
                 SalesLine.Type := "Sales Line Type".FromInteger(JTypeToken.AsValue().AsInteger());
 
             if JSalesLine.Get('no', JNoToken) then
-                SalesLine."No." := JNoToken.AsValue().AsCode();
+                SalesLine."No." := CopyStr(JNoToken.AsValue().AsCode(), 1, 20);
 
             if JSalesLine.Get('quantity', JQuantityToken) then
                 SalesLine.Quantity := JQuantityToken.AsValue().AsDecimal();

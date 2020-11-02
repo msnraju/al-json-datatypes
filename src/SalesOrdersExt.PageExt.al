@@ -9,6 +9,7 @@ pageextension 50100 "Sales Orders Ext" extends "Sales Orders"
             {
                 ApplicationArea = All;
                 Caption = 'To JSON';
+                ToolTip = 'Convert To JSON';
 
                 Image = Export;
                 Promoted = true;
